@@ -1,0 +1,47 @@
+#!/usr/bin/env node
+const fs = require('fs')
+const assert = require('assert')
+const yaml = require('yaml')
+
+const bolts = process.env.BOLTS_PATH || 'vendor/BOLTS'
+const output = process.env.DATA_OUTPUT_PATH || '.'
+
+const nut = yaml.parse(fs.readFileSync(`${bolts}/data/nut.blt`, 'utf8'))
+const hex = fs.readFileSync(`${bolts}/data/hex.blt`, 'utf8')
+
+const processNutClass = (id) => {
+  const class_ = nut.classes.find(c => c.id == id)
+  assert(class_)
+
+  const ti = class_.parameters.tables.columns.indexOf('m_max')
+  const si = class_.parameters.tables.columns.indexOf('s')
+  const data = class_.parameters.tables.data
+
+  return Object.fromEntries(
+    Object.entries(data).map(e =>
+      [e[0], {
+        thickness: e[1][ti],
+        width: e[1][si],
+      }]
+    )
+  )
+
+}
+
+const classes = {
+  'hexagon_thin': processNutClass('hexagonthinnut1'),
+  'hexagon': processNutClass('hexagonnut1')
+}
+const defaultClass = 'hexagon'
+
+let nutData = {};
+
+for (const [class_, classData] of Object.entries(classes)) {
+  for (const [size, sizeData] of Object.entries(classData)) {
+    if (!nutData[size]) nutData[size] = {};
+    nutData[size][class_] = sizeData;
+    if (class_ === defaultClass) nutData[size] = { ...sizeData, ...nutData[size] }
+  }
+}
+
+fs.writeFileSync(`${output}/nuts.json`, JSON.stringify(nutData))

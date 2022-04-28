@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+if [[ ! -d "vendor/BOLTS" ]]; then
+  git clone https://github.com/boltsparts/BOLTS.git vendor/BOLTS
+fi
+
+./scripts/build-dataset
