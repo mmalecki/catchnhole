@@ -21,6 +21,11 @@ difference () {
     bolt("M8", 17, kind = "sockethead");
   }
 
-  translate([0, 0, 4]) nutcatch_sidecut("M3");
+  translate([a / 2 - 5, 0, 4])
+    rotate([0, 270, 180]) {
+      nutcatch_sidecut("M3");
+      bolt("M3", 5);
+    }
+
   cylinder(d = 3, h = 8, $fn=200);
 }

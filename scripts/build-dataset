@@ -42,6 +42,9 @@ const nutClasses = {
 const defaultNutClass = 'hexagon'
 
 const boltClasses = {
+  'threadless': processClass(bolts, 'hexsocketheadcap', {
+    diameter: 'd1',
+  }),
   'sockethead': processClass(bolts, 'hexsocketheadcap', {
     diameter: 'd1',
     head_diameter: 'd2',
