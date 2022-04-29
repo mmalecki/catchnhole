@@ -8,6 +8,8 @@ A_LOT = 200;
 bolts = import("../bolts.json");
 nuts = import("../nuts.json");
 
+DEFAULT_HEAD_DIAMETER_CLEARANCE = 0.1;
+
 function hex_inscribed_circle_d (w) = 2 * w / sqrt(3);
 
 function bolt_data () = bolts;
@@ -25,11 +27,11 @@ module hexagon (d, h) {
 //     bolt_head("M3", "countersunk");
 //     bolt_head("M5", head_diameter_clearence = 0.2);
 //
-module bolt_head (options, kind, head_diameter_clearence = 0.1) {
+module bolt_head (options, kind, head_diameter_clearance = DEFAULT_HEAD_DIAMETER_CLEARANCE) {
   b = is_string(options) ? bolts[options][kind] : options;
 
   if (kind == "sockethead") {
-    cylinder(d = b.head_diameter + 2 * head_diameter_clearence, h = b.head_length);
+    cylinder(d = b.head_diameter + 2 * head_diameter_clearance, h = b.head_length);
   }
   else if (kind == "countersunk") {
     cylinder(d1 = b.diameter, d2 = b.head_diameter, h = b.head_length);
@@ -43,12 +45,14 @@ module bolt_head (options, kind, head_diameter_clearence = 0.1) {
 //
 //     bolt("M3", 25);
 //
-module bolt (options, length, kind = "threadless", head_diameter_clearence) {
+module bolt (options, length, kind = "threadless", head_diameter_clearance = DEFAULT_HEAD_DIAMETER_CLEARANCE, countersink = 0) {
   b = is_string(options) ? bolts[options][kind] : options;
 
-  cylinder(d = b.diameter, h = length);
+  translate([0, 0, -countersink * (is_num(b.head_length) ? b.head_length : 0)]) {
+    cylinder(d = b.diameter, h = length);
 
-  if (kind != "threadless") translate([0, 0, length]) bolt_head(b, kind);
+    if (kind != "threadless") translate([0, 0, length]) bolt_head(b, kind, head_diameter_clearance);
+  }
 }
 
 //
