@@ -45,13 +45,13 @@ module bolt_head (options, kind, head_diameter_clearance = DEFAULT_HEAD_DIAMETER
 //
 //     bolt("M3", 25);
 //
-module bolt (options, length, kind = "threadless", head_diameter_clearance = DEFAULT_HEAD_DIAMETER_CLEARANCE, countersink = 0) {
+module bolt (options, length, kind = "headless", head_diameter_clearance = DEFAULT_HEAD_DIAMETER_CLEARANCE, countersink = 0) {
   b = is_string(options) ? bolts[options][kind] : options;
 
   translate([0, 0, -countersink * (is_num(b.head_length) ? b.head_length : 0)]) {
     cylinder(d = b.diameter, h = length);
 
-    if (kind != "threadless") translate([0, 0, length]) bolt_head(b, kind, head_diameter_clearance);
+    if (kind != "headless") translate([0, 0, length]) bolt_head(b, kind, head_diameter_clearance);
   }
 }
 
