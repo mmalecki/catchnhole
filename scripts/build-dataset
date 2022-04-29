@@ -45,7 +45,7 @@ const boltClasses = {
   'threadless': processClass(bolts, 'hexsocketheadcap', {
     diameter: 'd1',
   }),
-  'sockethead': processClass(bolts, 'hexsocketheadcap', {
+  'socket_head': processClass(bolts, 'hexsocketheadcap', {
     diameter: 'd1',
     head_diameter: 'd2',
     head_length: 'k'

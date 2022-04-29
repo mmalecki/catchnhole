@@ -19,13 +19,13 @@ difference () {
 
   translate([-15, 0, 0]) {
     nutcatch_parallel("M8");
-    bolt("M8", h, kind = "sockethead", countersink = 0.5);
+    bolt("M8", h, kind = "socket_head", countersink = 0.5);
   }
 
   translate([a / 2 - nutcatch_side_offset, 0, 4])
     rotate([0, 270, 180]) {
       nutcatch_sidecut("M3");
-      bolt("M3", nutcatch_side_offset, kind = "sockethead", countersink = 0.1);
+      bolt("M3", nutcatch_side_offset, kind = "socket_head", countersink = 0.1);
     }
 
   cylinder(d = 3, h = 8, $fn=200);

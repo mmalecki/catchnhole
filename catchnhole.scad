@@ -30,7 +30,7 @@ module hexagon (d, h) {
 module bolt_head (options, kind, head_diameter_clearance = DEFAULT_HEAD_DIAMETER_CLEARANCE) {
   b = is_string(options) ? bolts[options][kind] : options;
 
-  if (kind == "sockethead") {
+  if (kind == "socket_head") {
     cylinder(d = b.head_diameter + 2 * head_diameter_clearance, h = b.head_length);
   }
   else if (kind == "countersunk") {
