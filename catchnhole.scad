@@ -1,29 +1,54 @@
 // catchnhole: because nutsnbolts was taken
 // Purpose: an ergonomic way to create nutcatches and screw holes.
-//
+
 // License: MIT
 
 A_LOT = 200;
 
-// bolt - generate a bolt positive.
-//
-// Usage:
-//
-//     bolt("M3x25");
-//
-
-// bolts = import("bolts.json");
+bolts = import("../bolts.json");
 nuts = import("../nuts.json");
 
 function hex_inscribed_circle_d (w) = 2 * w / sqrt(3);
+
+function bolt_data () = bolts;
+function nut_data () = nuts;
 
 module hexagon (d, h) {
   cylinder(d = d, h = h, $fn = 6);
 }
 
-module bolt (options) {
-  b = is_string(options) ? bolts[options] : options;
-  echo(b);
+//
+// bolt - generate a bolt head positive
+//
+// Usage:
+//
+//     bolt_head("M3", "countersunk");
+//     bolt_head("M5", head_diameter_clearence = 0.2);
+//
+module bolt_head (options, kind, head_diameter_clearence = 0.1) {
+  b = is_string(options) ? bolts[options][kind] : options;
+
+  if (kind == "sockethead") {
+    cylinder(d = b.head_diameter + 2 * head_diameter_clearence, h = b.head_length);
+  }
+  else if (kind == "countersunk") {
+    cylinder(d1 = b.diameter, d2 = b.head_diameter, h = b.head_length);
+  }
+}
+
+//
+// bolt - generate a bolt positive.
+//
+// Usage:
+//
+//     bolt("M3", 25);
+//
+module bolt (options, length, kind = "threadless", head_diameter_clearence) {
+  b = is_string(options) ? bolts[options][kind] : options;
+
+  cylinder(d = b.diameter, h = length);
+
+  if (kind != "threadless") translate([0, 0, length]) bolt_head(b, kind);
 }
 
 //

@@ -3,45 +3,76 @@ const fs = require('fs')
 const assert = require('assert')
 const yaml = require('yaml')
 
-const bolts = process.env.BOLTS_PATH || 'vendor/BOLTS'
+const path = process.env.BOLTS_PATH || 'vendor/BOLTS'
 const output = process.env.DATA_OUTPUT_PATH || '.'
 
-const nut = yaml.parse(fs.readFileSync(`${bolts}/data/nut.blt`, 'utf8'))
-const hex = fs.readFileSync(`${bolts}/data/hex.blt`, 'utf8')
+const nuts = yaml.parse(fs.readFileSync(`${path}/data/nut.blt`, 'utf8'))
+const bolts = yaml.parse(fs.readFileSync(`${path}/data/hex_socket.blt`, 'utf8'))
 
-const processNutClass = (id) => {
-  const class_ = nut.classes.find(c => c.id == id)
-  assert(class_)
+const processClass = (spec, id, parameterMappings) => {
+  const class_ = spec.classes.find(c => c.id == id)
+  let columns = {}
 
-  const ti = class_.parameters.tables.columns.indexOf('m_max')
-  const si = class_.parameters.tables.columns.indexOf('s')
+  for (const [output, param] of Object.entries(parameterMappings)) {
+    columns[output] = class_.parameters.tables.columns.indexOf(param);
+  }
+
   const data = class_.parameters.tables.data
 
   return Object.fromEntries(
     Object.entries(data).map(e =>
-      [e[0], {
-        thickness: e[1][ti],
-        width: e[1][si],
-      }]
+      [e[0], Object.fromEntries(
+        Object.entries(columns).map(c =>
+          [c[0], e[1][c[1]]]
+        )
+      )]
     )
   )
-
 }
 
-const classes = {
-  'hexagon_thin': processNutClass('hexagonthinnut1'),
-  'hexagon': processNutClass('hexagonnut1')
+const nutMappings = {
+  thickness: 'm_max',
+  width: 's'
 }
-const defaultClass = 'hexagon'
+
+const nutClasses = {
+  'hexagon_thin': processClass(nuts, 'hexagonthinnut1', nutMappings),
+  'hexagon': processClass(nuts, 'hexagonnut1', nutMappings)
+}
+const defaultNutClass = 'hexagon'
+
+const boltClasses = {
+  'sockethead': processClass(bolts, 'hexsocketheadcap', {
+    diameter: 'd1',
+    head_diameter: 'd2',
+    head_length: 'k'
+  }),
+  'countersunk': processClass(bolts, 'hexsocketcountersunk', {
+    diameter: 'd1',
+    head_diameter: 'd2',
+    head_length: 'k_max'
+  }),
+}
+const defaultBoltClass = 'sockethead'
 
 let nutData = {};
+let boltData = {};
 
-for (const [class_, classData] of Object.entries(classes)) {
+for (const [class_, classData] of Object.entries(nutClasses)) {
   for (const [size, sizeData] of Object.entries(classData)) {
     if (!nutData[size]) nutData[size] = {};
     nutData[size][class_] = sizeData;
-    if (class_ === defaultClass) nutData[size] = { ...sizeData, ...nutData[size] }
+    if (class_ === defaultNutClass) nutData[size] = { ...sizeData, ...nutData[size] }
+  }
+}
+
+for (const [class_, classData] of Object.entries(boltClasses)) {
+  for (const [size, sizeData] of Object.entries(classData)) {
+    if (!boltData[size]) boltData[size] = {};
+    boltData[size][class_] = sizeData;
+    if (class_ === defaultBoltClass) boltData[size] = { ...sizeData, ...boltData[size] }
   }
 }
 
 fs.writeFileSync(`${output}/nuts.json`, JSON.stringify(nutData))
+fs.writeFileSync(`${output}/bolts.json`, JSON.stringify(boltData))
