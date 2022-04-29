@@ -19,3 +19,6 @@ git submodule add https://github.com/mmalecki/catchnhole catchnhole
 ```openscad
 use <catchnhole/catchnhole.scad>;
 ```
+
+## Acknowledgements
+* The [authors](https://github.com/boltsparts/BOLTS/graphs/contributors) of the [BOLTS](https://github.com/boltsparts/BOLTS) library
