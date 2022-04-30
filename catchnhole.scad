@@ -5,8 +5,8 @@
 
 A_LOT = 200;
 
-bolts = import("../bolts.json");
-nuts = import("../nuts.json");
+bolts = import("bolts.json");
+nuts = import("nuts.json");
 
 DEFAULT_HEAD_DIAMETER_CLEARANCE = 0.1;
 
