@@ -62,10 +62,10 @@ module bolt (options, length, kind = "headless", head_diameter_clearance = DEFAU
 //
 //     nutcatch_parallel("M3");
 //
-module nutcatch_parallel (options, height_clearance = 0, kind = "hexagon") {
+module nutcatch_parallel (options, kind = "hexagon", height_clearance = 0, width_clearance = 0) {
   opt = is_string(options) ? nuts[options] : options;
   n = opt[kind];
-  hexagon(d = hex_inscribed_circle_d(n.width), h = n.thickness + height_clearance);
+  hexagon(d = hex_inscribed_circle_d(n.width + width_clearance), h = n.thickness + height_clearance);
 }
 
 //
@@ -75,10 +75,11 @@ module nutcatch_parallel (options, height_clearance = 0, kind = "hexagon") {
 //
 //     nutcatch_sidecut("M3");
 //
-module nutcatch_sidecut (options, height_clearance = 0, kind = "hexagon", length = A_LOT) {
+module nutcatch_sidecut (options, kind = "hexagon", height_clearance = 0, width_clearance = 0, length = A_LOT) {
   opt = is_string(options) ? nuts[options] : options;
   n = opt[kind];
   h = n.thickness + height_clearance;
-  hexagon(d = hex_inscribed_circle_d(n.width), h = h);
-  translate([0, -n.width / 2, 0]) cube([length, n.width, h]);
+  w = n.width + width_clearance;
+  hexagon(d = hex_inscribed_circle_d(w), h = h);
+  translate([0, -w / 2, 0]) cube([length, w, h]);
 }

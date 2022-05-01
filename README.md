@@ -52,19 +52,31 @@ Arguments:
   * `head_diameter_clearance` - how much clearance to leave for the bolt head, where applicable
   * `countersink` (number) - how much to "countersink" the bolt - move it down by the `countersink` * bolt head length
 
-### `nutcatch_parallel(name, height_clearance = 0)`
+### `bolt_head(name, kind, head_diameter_clearance = 0.1)`
+Draw a bolt head up the Z axis.
+
+Arguments:
+  * `name` (string) - name of the bolt, e.g. `"M3"`
+  * `kind` (string) - the kind of the bolt, available values:
+    * `"socket_head"` - socket head cap (ISO 4762)
+    * `"countersunk"` - countersunk head (ISO 10642)
+  * `head_diameter_clearance` - how much clearance to leave for the bolt head, where applicable
+
+### `nutcatch_parallel(name, height_clearance = 0, width_clearance = 0)`
 Draw a nutcatch parallel to the bolt axis.
 
 Arguments:
   * `name` (string) - name of the nut, e.g. `"M3"`
   * `height_clearance` (number) - additional nut height clearance
+  * `width_clearance` (number) - additional nut width clearance
 
-### `nutcatch_sidecut(name, height_clearance = 0)`
+### `nutcatch_sidecut(name, height_clearance = 0, width_clearance = 0)`
 Draw a nutcatch sidecut into the part:
 
 Arguments:
   * `name` (string) - name of the nut, e.g. `"M3"`
   * `height_clearance` (number) - additional nut height clearance
+  * `width_clearance` (number) - additional nut width clearance
 
 ## Acknowledgements
 * The [authors](https://github.com/boltsparts/BOLTS/graphs/contributors) of the [BOLTS](https://github.com/boltsparts/BOLTS) library
