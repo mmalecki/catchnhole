@@ -27,14 +27,21 @@ module hexagon (d, h) {
 //     bolt_head("M3", "countersunk");
 //     bolt_head("M5", head_diameter_clearence = 0.2);
 //
-module bolt_head (options, kind, head_diameter_clearance = DEFAULT_HEAD_DIAMETER_CLEARANCE) {
+module bolt_head (options, kind, head_diameter_clearance = DEFAULT_HEAD_DIAMETER_CLEARANCE, head_top_clearance = 0) {
   b = is_string(options) ? bolts[options][kind] : options;
 
   if (kind == "socket_head") {
-    cylinder(d = b.head_diameter + 2 * head_diameter_clearance, h = b.head_length);
+    cylinder(d = b.head_diameter + head_diameter_clearance, h = b.head_length + head_top_clearance);
   }
   else if (kind == "countersunk") {
-    cylinder(d1 = b.diameter, d2 = b.head_diameter, h = b.head_length);
+    head_dia = b.head_diameter + head_diameter_clearance;
+    cylinder(
+      d1 = b.diameter + head_diameter_clearance,
+      d2 = head_dia,
+      h = b.head_length
+    );
+    translate([0, 0, b.head_length])
+      cylinder(d = head_dia, head_top_clearance);
   }
 }
 
@@ -48,10 +55,20 @@ module bolt_head (options, kind, head_diameter_clearance = DEFAULT_HEAD_DIAMETER
 module bolt (options, length, kind = "headless", head_diameter_clearance = DEFAULT_HEAD_DIAMETER_CLEARANCE, countersink = 0) {
   b = is_string(options) ? bolts[options][kind] : options;
 
-  translate([0, 0, -countersink * (is_num(b.head_length) ? b.head_length : 0)]) {
+  head_length = is_num(b.head_length) ? b.head_length : 0;
+  translate([0, 0, -countersink * head_length]) {
     cylinder(d = b.diameter, h = length);
 
-    if (kind != "headless") translate([0, 0, length]) bolt_head(b, kind, head_diameter_clearance);
+    if (kind != "headless") {
+      translate([0, 0, length]) {
+        bolt_head(
+          b,
+          kind,
+          head_diameter_clearance,
+          head_top_clearance = max((countersink - 1) * head_length, 0)
+        );
+      }
+    }
   }
 }
 
