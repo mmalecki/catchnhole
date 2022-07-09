@@ -52,7 +52,14 @@ module bolt_head (options, kind, head_diameter_clearance = DEFAULT_HEAD_DIAMETER
 //
 //     bolt("M3", 25);
 //
-module bolt (options, length, kind = "headless", head_diameter_clearance = DEFAULT_HEAD_DIAMETER_CLEARANCE, countersink = 0) {
+module bolt (
+  options,
+  length,
+  kind = "headless",
+  head_diameter_clearance = DEFAULT_HEAD_DIAMETER_CLEARANCE,
+  head_top_clearance = 0,
+  countersink = 0
+) {
   b = is_string(options) ? bolts[options][kind] : options;
 
   head_length = is_num(b.head_length) ? b.head_length : 0;
@@ -65,7 +72,7 @@ module bolt (options, length, kind = "headless", head_diameter_clearance = DEFAU
           b,
           kind,
           head_diameter_clearance,
-          head_top_clearance = max((countersink - 1) * head_length, 0)
+          head_top_clearance = max((countersink - 1) * head_length, 0) + head_top_clearance,
         );
       }
     }
