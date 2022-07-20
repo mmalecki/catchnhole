@@ -79,6 +79,24 @@ module bolt (
   }
 }
 
+module nut (
+  options,
+  kind = "hexagon",
+  height_clearance = 0,
+  width_clearance = 0
+) {
+  n = is_string(options) ? nuts[options][kind] : options;
+  thickness = kind == "hexagon_lock" ? n.nut_thickness : n.thickness;
+  h = thickness + height_clearance;
+
+  hexagon(d = hex_inscribed_circle_d(n.width + width_clearance), h = h);
+  if (kind == "hexagon_lock") {
+    translate([0, 0, thickness]) {
+      cylinder(d = n.width + width_clearance, h = n.thickness - n.nut_thickness + height_clearance);
+    }
+  }
+}
+
 //
 // nutcatch_parallel - generate a parallel (surface) nutcatch positive
 //
@@ -87,8 +105,7 @@ module bolt (
 //     nutcatch_parallel("M3");
 //
 module nutcatch_parallel (options, kind = "hexagon", height_clearance = 0, width_clearance = 0) {
-  n = is_string(options) ? nuts[options][kind] : options;
-  hexagon(d = hex_inscribed_circle_d(n.width + width_clearance), h = n.thickness + height_clearance);
+  nut(options, kind, height_clearance, width_clearance);
 }
 
 //
@@ -100,8 +117,18 @@ module nutcatch_parallel (options, kind = "hexagon", height_clearance = 0, width
 //
 module nutcatch_sidecut (options, kind = "hexagon", height_clearance = 0, width_clearance = 0, length = A_LOT) {
   n = is_string(options) ? nuts[options][kind] : options;
-  h = n.thickness + height_clearance;
+  thickness = kind == "hexagon_lock" ? n.nut_thickness : n.thickness;
+  h = thickness + height_clearance;
   w = n.width + width_clearance;
-  hexagon(d = hex_inscribed_circle_d(w), h = h);
-  translate([0, -w / 2, 0]) cube([length, w, h]);
+
+  nut(options, kind, height_clearance, width_clearance);
+  translate([0, -w / 2]) {
+    cube([length, w, h]);
+
+    if (kind == "hexagon_lock") {
+      translate([0, 0, thickness]) {
+        cube([length, w, n.thickness - n.nut_thickness + height_clearance]);
+      }
+    }
+  }
 }

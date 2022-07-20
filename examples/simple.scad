@@ -9,8 +9,8 @@ nutcatch_side_offset = 7.5;
 difference () {
   translate([-a / 2, -b / 2, 0]) cube([a, b, h]);
 
-  // A simple nutcatch on the bottom:
-  nutcatch_parallel("M3");
+  // A lock nutcatch on the bottom:
+  nutcatch_parallel("M3", kind = "hexagon_lock");
   bolt("M3", h);
 
   // Get one on the top as well:

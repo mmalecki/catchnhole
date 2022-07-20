@@ -31,13 +31,15 @@ const processClass = (spec, id, parameterMappings) => {
 }
 
 const nutMappings = {
+  nut_thickness: 'm_nut',
   thickness: 'm_max',
   width: 's'
 }
 
 const nutClasses = {
   'hexagon_thin': processClass(nuts, 'hexagonthinnut1', nutMappings),
-  'hexagon': processClass(nuts, 'hexagonnut1', nutMappings)
+  'hexagon': processClass(nuts, 'hexagonnut1', nutMappings),
+  'hexagon_lock': processClass(nuts, 'hexagonlocknut', nutMappings)
 }
 const defaultNutClass = 'hexagon'
 
