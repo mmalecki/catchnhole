@@ -35,9 +35,16 @@ difference () {
   }
 
   // A sidecut nutcatch:
-  translate([a / 2 - nutcatch_side_offset, 0, 4])
+  translate([a / 2 - nutcatch_side_offset, 5, 4])
     rotate([0, 270, 180]) {
       nutcatch_sidecut("M3");
+      bolt("M3", nutcatch_side_offset, kind = "socket_head", countersink = 0.1);
+    }
+
+  // A sidecut locknut catch:
+  translate([a / 2 - nutcatch_side_offset, -5, 4])
+    rotate([0, 270, 180]) {
+      nutcatch_sidecut("M3", kind = "hexagon_lock");
       bolt("M3", nutcatch_side_offset, kind = "socket_head", countersink = 0.1);
     }
 }
