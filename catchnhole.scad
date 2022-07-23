@@ -79,7 +79,7 @@ module bolt (
   }
 }
 
-module nut (
+module _nut (
   options,
   kind = "hexagon",
   height_clearance = 0,
@@ -89,11 +89,15 @@ module nut (
   thickness = kind == "hexagon_lock" ? n.nut_thickness : n.thickness;
   h = thickness + height_clearance;
 
-  hexagon(d = hex_inscribed_circle_d(n.width + width_clearance), h = h);
   if (kind == "hexagon_lock") {
-    translate([0, 0, thickness]) {
-      cylinder(d = n.width + width_clearance, h = n.thickness - n.nut_thickness + height_clearance);
+    lock_h = n.thickness - n.nut_thickness;
+    cylinder(d = n.width + width_clearance, h = lock_h + height_clearance);
+    translate([0, 0, lock_h]) {
+      hexagon(d = hex_inscribed_circle_d(n.width + width_clearance), h = h);
     }
+  }
+  else {
+    hexagon(d = hex_inscribed_circle_d(n.width + width_clearance), h = h);
   }
 }
 
@@ -105,7 +109,9 @@ module nut (
 //     nutcatch_parallel("M3");
 //
 module nutcatch_parallel (options, kind = "hexagon", height_clearance = 0, width_clearance = 0) {
-  nut(options, kind, height_clearance, width_clearance);
+  n = is_string(options) ? nuts[options][kind] : options;
+
+  hexagon(d = hex_inscribed_circle_d(n.width + width_clearance), h = n.thickness + height_clearance);
 }
 
 //
@@ -117,18 +123,11 @@ module nutcatch_parallel (options, kind = "hexagon", height_clearance = 0, width
 //
 module nutcatch_sidecut (options, kind = "hexagon", height_clearance = 0, width_clearance = 0, length = A_LOT) {
   n = is_string(options) ? nuts[options][kind] : options;
-  thickness = kind == "hexagon_lock" ? n.nut_thickness : n.thickness;
-  h = thickness + height_clearance;
+  h = n.thickness + height_clearance;
   w = n.width + width_clearance;
 
-  nut(options, kind, height_clearance, width_clearance);
+  _nut(options, kind, height_clearance, width_clearance);
   translate([0, -w / 2]) {
     cube([length, w, h]);
-
-    if (kind == "hexagon_lock") {
-      translate([0, 0, thickness]) {
-        cube([length, w, n.thickness - n.nut_thickness + height_clearance]);
-      }
-    }
   }
 }
