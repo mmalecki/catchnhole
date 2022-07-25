@@ -71,13 +71,15 @@ module bolt (
   kind = DEFAULT_BOLT_KIND,
   head_diameter_clearance = DEFAULT_HEAD_DIAMETER_CLEARANCE,
   head_top_clearance = 0,
+  length_clearance = 0,
   countersink = 0
 ) {
   b = bolt_data(options, kind);
 
   head_length = is_num(b.head_length) ? b.head_length : 0;
   translate([0, 0, -countersink * head_length]) {
-    cylinder(d = b.diameter, h = length);
+    translate([0, 0, -length_clearance])
+      cylinder(d = b.diameter, h = length + length_clearance);
 
     if (kind != "headless") {
       translate([0, 0, length]) {
