@@ -12,8 +12,19 @@ DEFAULT_HEAD_DIAMETER_CLEARANCE = 0.1;
 
 function hex_inscribed_circle_d (w) = 2 * w / sqrt(3);
 
-function bolt_data () = bolts;
-function nut_data () = nuts;
+function bolt_data (options = undef, kind = undef) = 
+  is_undef(options) ? bolts : (is_string(options) ? bolts[options][kind] : options);
+
+function nut_data (options = undef, kind = undef) =
+  is_undef(options) ? nuts : (is_string(options) ? nuts[options][kind] : options);
+
+function bolt_head_length (options, kind = undef) =
+  let (h = bolt_data(options, kind).head_length)
+    is_undef(h) ? 0 : h;
+
+function nut_height (options, kind = undef) =
+  let (h = nut_data(options, kind).thickness)
+    is_undef(h) ? 0 : h;
 
 module hexagon (d, h) {
   cylinder(d = d, h = h, $fn = 6);
