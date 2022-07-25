@@ -51,6 +51,7 @@ Arguments:
     * `"countersunk"` - countersunk head (ISO 10642)
   * `head_diameter_clearance` - how much side clearance to leave for the bolt head, where applicable
   * `head_top_clearance` - how much top clearance to leave for the bolt head, where applicable
+  * `length_clearance` - how much clearance to leave for the bolt past `length` (down the Z axis; useful if your origin point is a nut and your `length` is calculated)
   * `countersink` (number) - how much to "countersink" the bolt - move it down by the `countersink` * bolt head length
 
 #### `bolt_head(name, kind, head_diameter_clearance = 0.1)`
