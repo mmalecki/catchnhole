@@ -49,10 +49,11 @@ Arguments:
     * `"headless"` - no bolt head
     * `"socket_head"` - socket head cap (ISO 4762)
     * `"countersunk"` - countersunk head (ISO 10642)
-  * `head_diameter_clearance` - how much clearance to leave for the bolt head, where applicable
+  * `head_diameter_clearance` - how much side clearance to leave for the bolt head, where applicable
+  * `head_top_clearance` - how much top clearance to leave for the bolt head, where applicable
   * `countersink` (number) - how much to "countersink" the bolt - move it down by the `countersink` * bolt head length
 
-### `bolt_head(name, kind, head_diameter_clearance = 0.1)`
+#### `bolt_head(name, kind, head_diameter_clearance = 0.1)`
 Draw a bolt head up the Z axis.
 
 Arguments:
@@ -60,13 +61,18 @@ Arguments:
   * `kind` (string) - the kind of the bolt, available values:
     * `"socket_head"` - socket head cap (ISO 4762)
     * `"countersunk"` - countersunk head (ISO 10642)
-  * `head_diameter_clearance` - how much clearance to leave for the bolt head, where applicable
+  * `head_diameter_clearance` - how much side clearance to leave for the bolt head, where applicable
+  * `head_top_clearance` - how much top clearance to leave for the bolt head, where applicable
 
-### `nutcatch_parallel(name, height_clearance = 0, width_clearance = 0)`
+#### `nutcatch_parallel(name, height_clearance = 0, width_clearance = 0)`
 Draw a nutcatch parallel to the bolt axis.
 
 Arguments:
   * `name` (string) - name of the nut, e.g. `"M3"`
+  * `kind` (string) - the kind of the nut, available values:
+    * `"hexagon"` - hexagon (ISO 4032)
+    * `"hexagon_thin"` - thin hexagon (ISO 4035)
+    * `"hexagon_lock"` - hexagon locknut (ISO 7040)
   * `height_clearance` (number) - additional nut height clearance
   * `width_clearance` (number) - additional nut width clearance
 
@@ -75,6 +81,7 @@ Draw a nutcatch sidecut into the part:
 
 Arguments:
   * `name` (string) - name of the nut, e.g. `"M3"`
+  * `kind` (string) - the kind of the nut, as noted in `nutcatch_parallel`
   * `height_clearance` (number) - additional nut height clearance
   * `width_clearance` (number) - additional nut width clearance
 
