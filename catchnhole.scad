@@ -39,7 +39,7 @@ module hexagon (d, h) {
 //     bolt_head("M5", head_diameter_clearence = 0.2);
 //
 module bolt_head (options, kind, head_diameter_clearance = DEFAULT_HEAD_DIAMETER_CLEARANCE, head_top_clearance = 0) {
-  b = is_string(options) ? bolts[options][kind] : options;
+  b = bolt_data(options, kind);
 
   if (kind == "socket_head") {
     cylinder(d = b.head_diameter + head_diameter_clearance, h = b.head_length + head_top_clearance);
@@ -71,7 +71,7 @@ module bolt (
   head_top_clearance = 0,
   countersink = 0
 ) {
-  b = is_string(options) ? bolts[options][kind] : options;
+  b = bolt_data(options, kind);
 
   head_length = is_num(b.head_length) ? b.head_length : 0;
   translate([0, 0, -countersink * head_length]) {
@@ -96,7 +96,7 @@ module _nut (
   height_clearance = 0,
   width_clearance = 0
 ) {
-  n = is_string(options) ? nuts[options][kind] : options;
+  n = nut_data(options, kind);
   thickness = kind == "hexagon_lock" ? n.nut_thickness : n.thickness;
   h = thickness + height_clearance;
 
@@ -120,7 +120,7 @@ module _nut (
 //     nutcatch_parallel("M3");
 //
 module nutcatch_parallel (options, kind = "hexagon", height_clearance = 0, width_clearance = 0) {
-  n = is_string(options) ? nuts[options][kind] : options;
+  n = nut_data(options, kind);
 
   hexagon(d = hex_inscribed_circle_d(n.width + width_clearance), h = n.thickness + height_clearance);
 }
@@ -133,7 +133,7 @@ module nutcatch_parallel (options, kind = "hexagon", height_clearance = 0, width
 //     nutcatch_sidecut("M3");
 //
 module nutcatch_sidecut (options, kind = "hexagon", height_clearance = 0, width_clearance = 0, length = A_LOT) {
-  n = is_string(options) ? nuts[options][kind] : options;
+  n = nut_data(options, kind);
   h = n.thickness + height_clearance;
   w = n.width + width_clearance;
 
