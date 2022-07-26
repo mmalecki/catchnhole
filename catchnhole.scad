@@ -9,20 +9,22 @@ bolts = import("bolts.json");
 nuts = import("nuts.json");
 
 DEFAULT_HEAD_DIAMETER_CLEARANCE = 0.1;
+DEFAULT_BOLT_KIND = "headless";
+DEFAULT_NUT_KIND = "hexagon";
 
 function hex_inscribed_circle_d (w) = 2 * w / sqrt(3);
 
-function bolt_data (options = undef, kind = undef) = 
+function bolt_data (options = undef, kind = DEFAULT_BOLT_KIND) = 
   is_undef(options) ? bolts : (is_string(options) ? bolts[options][kind] : options);
 
-function nut_data (options = undef, kind = undef) =
+function nut_data (options = undef, kind = DEFAULT_NUT_KIND) =
   is_undef(options) ? nuts : (is_string(options) ? nuts[options][kind] : options);
 
-function bolt_head_length (options, kind = undef) =
+function bolt_head_length (options, kind = DEFAULT_BOLT_KIND) =
   let (h = bolt_data(options, kind).head_length)
     is_undef(h) ? 0 : h;
 
-function nut_height (options, kind = undef) =
+function nut_height (options, kind = DEFAULT_NUT_KIND) =
   let (h = nut_data(options, kind).thickness)
     is_undef(h) ? 0 : h;
 
@@ -66,7 +68,7 @@ module bolt_head (options, kind, head_diameter_clearance = DEFAULT_HEAD_DIAMETER
 module bolt (
   options,
   length,
-  kind = "headless",
+  kind = DEFAULT_BOLT_KIND,
   head_diameter_clearance = DEFAULT_HEAD_DIAMETER_CLEARANCE,
   head_top_clearance = 0,
   countersink = 0
