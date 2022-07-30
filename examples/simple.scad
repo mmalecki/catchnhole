@@ -45,6 +45,6 @@ difference () {
   translate([a / 2 - nutcatch_side_offset, -5, 4])
     rotate([0, 270, 180]) {
       nutcatch_sidecut("M3", kind = "hexagon_lock");
-      bolt("M3", nutcatch_side_offset, kind = "socket_head", countersink = 0.1);
+      bolt("M3", nutcatch_side_offset, kind = "socket_head", countersink = 0.1, length_clearance = 4);
     }
 }
