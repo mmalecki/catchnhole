@@ -78,8 +78,13 @@ module bolt (
 
   head_length = is_num(b.head_length) ? b.head_length : 0;
   translate([0, 0, -countersink * head_length]) {
-    translate([0, 0, -length_clearance])
-      cylinder(d = b.diameter, h = length + length_clearance);
+    translate([0, 0, -length_clearance]) {
+      // If the bolt is headless, we consider the `head_top_clearance` an
+      // extension of the bolt itself. Despite the kind name, the concept
+      // of hiding a bolt beneath material and needing to expose its "head"
+      // still applies.
+      cylinder(d = b.diameter, h = length + length_clearance + (kind == "headless" ? head_top_clearance : 0));
+    }
 
     if (kind != "headless") {
       // The "countersunk" bolt's (ISO 10642) head is part of the bolt length,
