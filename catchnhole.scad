@@ -82,7 +82,9 @@ module bolt (
       cylinder(d = b.diameter, h = length + length_clearance);
 
     if (kind != "headless") {
-      translate([0, 0, length]) {
+      // The "countersunk" bolt's (ISO 10642) head is part of the bolt length,
+      // as opposed to any other case we handle/I can think of.
+      translate([0, 0,  length - (kind == "countersunk" ? head_length : 0)]) {
         bolt_head(
           b,
           kind,
