@@ -59,6 +59,21 @@ module bolt_head (options, kind, head_diameter_clearance = DEFAULT_HEAD_DIAMETER
 }
 
 //
+// bolt - generate a 2D bolt hole positive. Most commonly used because you're
+// too lazy to turn that metric bolt size into a diameter.
+//
+// Usage:
+//
+//     bolt_2d("M3");
+//
+module bolt_2d (
+  options
+) {
+  b = bolt_data(options, DEFAULT_BOLT_KIND);
+  circle(d = b.diameter);
+}
+
+//
 // bolt - generate a bolt positive.
 //
 // Usage:
