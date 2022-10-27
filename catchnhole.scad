@@ -28,6 +28,15 @@ function nut_height (options, kind = DEFAULT_NUT_KIND) =
   let (h = nut_data(options, kind).thickness)
     is_undef(h) ? 0 : h;
 
+function nut_width_across_corners (options) =
+  let (h = nut_data(options).width)
+    is_undef(h) ? 0 : hex_inscribed_circle_d(h);
+
+// Get maximum width of a nut.
+// Aliased to `nut_width_across_corners` for now, but may change when, for example,
+// flanged nuts are introduced.
+function nut_max_width (options, kind = DEFAULT_NUT_KIND) = nut_width_across_corners(options);
+
 module hexagon (d, h) {
   cylinder(d = d, h = h, $fn = 6);
 }
