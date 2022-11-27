@@ -20,17 +20,21 @@ function bolt_data (options = undef, kind = DEFAULT_BOLT_KIND) =
 function nut_data (options = undef, kind = DEFAULT_NUT_KIND) =
   is_undef(options) ? nuts : (is_string(options) ? nuts[options][kind] : options);
 
+function bolt_diameter (options) = 
+  let (h = bolt_data(options))
+    is_undef(h) ? h : h.diameter;
+
 function bolt_head_length (options, kind = DEFAULT_BOLT_KIND) =
-  let (h = bolt_data(options, kind).head_length)
-    is_undef(h) ? 0 : h;
+  let (h = bolt_data(options, kind))
+    is_undef(h) ? h : is_undef(h.head_length) ? 0 : h.head_length;
 
 function nut_height (options, kind = DEFAULT_NUT_KIND) =
-  let (h = nut_data(options, kind).thickness)
-    is_undef(h) ? 0 : h;
+  let (h = nut_data(options, kind))
+    is_undef(h) ? h : h.thickness;
 
 function nut_width_across_corners (options) =
-  let (h = nut_data(options).width)
-    is_undef(h) ? 0 : hex_inscribed_circle_d(h);
+  let (h = nut_data(options))
+    is_undef(h) ? h : hex_inscribed_circle_d(h.width);
 
 // Get maximum width of a nut.
 // Aliased to `nut_width_across_corners` for now, but may change when, for example,
