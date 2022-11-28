@@ -122,7 +122,10 @@ module bolt (
           b,
           kind,
           head_diameter_clearance,
-          head_top_clearance = max((countersink - 1) * head_length, 0) + head_top_clearance,
+          head_top_clearance = max(
+            (countersink - (kind == "countersunk" ? 0 : 1)) * head_length,
+            0
+          ) + head_top_clearance
         );
       }
     }

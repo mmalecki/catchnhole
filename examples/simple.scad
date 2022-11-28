@@ -23,9 +23,14 @@ difference () {
 
 
   // An M5 nutcatch with a countersunk screw:
-  translate([10, 0, 0]) {
+  translate([10, b * 1/4, 0]) {
     nutcatch_parallel("M5");
-    bolt("M5", 25, kind = "countersunk");
+    bolt("M5", h, kind = "countersunk");
+  }
+
+  // And just a countersunk M5 with a countersunk screw:
+  translate([10, -b / 4, 0]) {
+    bolt("M5", h, kind = "countersunk", countersink = 1);
   }
 
   // An M8 nutcatch with a socket head countersunk screw:
