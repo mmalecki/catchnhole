@@ -77,7 +77,7 @@ Arguments:
   * `height_clearance` (number) - additional nut height clearance
   * `width_clearance` (number) - additional nut width clearance
 
-### `nutcatch_sidecut(name, height_clearance = 0, width_clearance = 0)`
+#### `nutcatch_sidecut(name, height_clearance = 0, width_clearance = 0)`
 Draw a nutcatch sidecut into the part:
 
 Arguments:
