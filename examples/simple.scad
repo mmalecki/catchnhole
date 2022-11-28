@@ -7,7 +7,10 @@ h = 25;
 nutcatch_side_offset = 7.5;
 
 difference () {
-  translate([-a / 2, -b / 2, 0]) cube([a, b, h]);
+  // Reduce the height a little bit to drop the visual artifacts from the
+  // `difference`s on a single surface. In practice, you wouldn't do this, since
+  // the artifacts don't affect slicing, etc.
+  translate([-a / 2, -b / 2, 0]) cube([a, b, h - 0.01]);
 
   // A lock nutcatch on the bottom:
   nutcatch_parallel("M3", kind = "hexagon_lock");
