@@ -6,8 +6,9 @@ An ergonomic way to create nutcatches, screw holes and countersinks in OpenSCAD.
 ![Nutcatches, screw holes and countersinks](examples/simple.png).
 
 ## Requirements and installation
-`catchnhole` uses OpenSCAD's JSON import, which is only present in the nightly
-build, and must be enabled.
+**`catchnhole` uses OpenSCAD's JSON `import`, which is only present in the [nightly
+build](https://github.com/openscad/openscad#building-openscad), and must be
+enabled** (`Edit` -> `Preferences` -> `Features` -> `import-function`).
 
 Add a git submodule to your project:
 
