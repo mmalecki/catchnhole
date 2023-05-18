@@ -88,4 +88,4 @@ Arguments:
   * `width_clearance` (number) - additional nut width clearance
 
 ## Acknowledgements
-* The [authors](https://github.com/boltsparts/BOLTS/graphs/contributors) of the [BOLTS](https://github.com/boltsparts/BOLTS) library
+* The [authors](https://github.com/boltsparts/boltsparts/graphs/contributors) of the [BOLTS](https://github.com/boltsparts/boltsparts) library
