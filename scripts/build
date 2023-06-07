@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 if [[ ! -d "vendor/BOLTS" ]]; then
-  git clone https://github.com/boltsparts/boltsparts.git vendor/BOLTS
+  git clone -b remove-duplicate-types-key-in-hex-socket https://github.com/mmalecki/boltsparts.git vendor/BOLTS
 fi
 
 ./scripts/build-dataset
