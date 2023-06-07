@@ -6,11 +6,14 @@ const yaml = require('yaml')
 const path = process.env.BOLTS_PATH || 'vendor/BOLTS'
 const output = process.env.DATA_OUTPUT_PATH || '.'
 
-const nuts = yaml.parse(fs.readFileSync(`${path}/data/nut.blt`, 'utf8'))
-const bolts = yaml.parse(fs.readFileSync(`${path}/data/hex_socket.blt`, 'utf8'))
+const nuts = yaml.parse(fs.readFileSync(`${path}/data/nut.blt`, 'utf8')).classes
+const bolts = [].concat(
+  yaml.parse(fs.readFileSync(`${path}/data/hex_socket.blt`, 'utf8')).classes,
+  yaml.parse(fs.readFileSync(`${path}/data/hex.blt`, 'utf8')).classes,
+)
 
-const processClass = (spec, id, parameterMappings) => {
-  const class_ = spec.classes.find(c => c.id == id)
+const processClass = (classes, id, parameterMappings) => {
+  const class_ = classes.find(c => c.id == id)
   let columns = {}
 
   for (const [output, param] of Object.entries(parameterMappings)) {
@@ -51,6 +54,11 @@ const boltClasses = {
     diameter: 'd1',
     head_diameter: 'd2',
     head_length: 'k'
+  }),
+  'hex_head': processClass(bolts, 'hexbolt2', {
+    diameter: 'd1',
+    width: 's',
+    head_length: 'k',
   }),
   'countersunk': processClass(bolts, 'hexsocketcountersunk', {
     diameter: 'd1',

@@ -69,6 +69,9 @@ module bolt_head (options, kind, head_diameter_clearance = DEFAULT_HEAD_DIAMETER
     translate([0, 0, b.head_length])
       cylinder(d = head_dia, head_top_clearance);
   }
+  else if (kind == "hex_head") {
+    hexagon(d = hex_inscribed_circle_d(b.width) + head_diameter_clearance, h = b.head_length + head_top_clearance);
+  }
 }
 
 //
