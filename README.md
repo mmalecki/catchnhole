@@ -50,6 +50,7 @@ Arguments:
     * `"headless"` - no bolt head
     * `"socket_head"` - socket head cap (ISO 4762)
     * `"countersunk"` - countersunk head (ISO 10642, DIN 7991)
+    * `"hex_head"` - hex head (ISO 4014)
   * `head_diameter_clearance` - how much side clearance to leave for the bolt head, where applicable
   * `head_top_clearance` - how much top clearance to leave for the bolt head, where applicable
   * `length_clearance` - how much clearance to leave for the bolt past `length` (down the Z axis; useful if your origin point is a nut and your `length` is calculated, or just want to allow for longer bolts)
@@ -63,6 +64,7 @@ Arguments:
   * `kind` (string) - the kind of the bolt, available values:
     * `"socket_head"` - socket head cap (ISO 4762)
     * `"countersunk"` - countersunk head (ISO 10642)
+    * `"hex_head"` - hex head (ISO 4014)
   * `head_diameter_clearance` - how much side clearance to leave for the bolt head, where applicable
   * `head_top_clearance` - how much top clearance to leave for the bolt head, where applicable
 
